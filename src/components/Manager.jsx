@@ -26,6 +26,11 @@ const Manager = () => {
 
 
     const savePassword = () => {
+        if(website == "" || username == "" || password == ""){
+            alert("Please fill in all fields!");
+            return;
+        }
+
         const newPassword = {
             website: website,
             username: username,
@@ -34,6 +39,9 @@ const Manager = () => {
 
         setPasswords([...passwords, newPassword]); //append the newPassword in the passowrds array 
         //... spread operator copies existing elements into the new array
+        setWebsite("")
+        setUsername("")
+        setPassword("")
     }
 
   return (
