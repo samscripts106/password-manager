@@ -6,6 +6,7 @@ const Manager = () => {
     const [website, setWebsite] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [editIndex, setEditIndex] = useState(null) //null means we are adding a new password
 
     const [passwords, setPasswords] = useState([]); //saved credentials
     //Every time the save password button is clicked a new object like the following will be appende din this array
@@ -37,16 +38,37 @@ const Manager = () => {
             password: password
         }
 
-        setPasswords([...passwords, newPassword]); //append the newPassword in the passowrds array 
-        //... spread operator copies existing elements into the new array
+        if(editIndex === null){
+            //Adding a new password
+            setPasswords([...passwords, newPassword]); //append the newPassword in the passowrds array 
+            //... spread operator copies existing elements into the new array
+        }else{
+            //Update an existing password
+            const updatedPasswords = [...passwords];
+
+            updatedPasswords[editIndex] = newPassword;
+
+            setPasswords(updatedPasswords);
+            setEditIndex(null);
+        } 
+        
+        //Clear the input fields 
         setWebsite("")
         setUsername("")
         setPassword("")
-    }
+    };
 
     const handleDelete = (index) =>{
         const updatedPasswords = passwords.filter((item,i)=> i!==index); //.filter() creates a new array 
         setPasswords(updatedPasswords); //we set our password array to the new array 
+    }
+
+    const handleEdit = (index) => {
+        setWebsite(passwords[index].website);
+        setUsername(passwords[index].username);
+        setPassword(passwords[index].password);
+
+        setEditIndex(index);
     }
 
   return (
@@ -60,7 +82,7 @@ const Manager = () => {
             </div>
 
             <section className="mt-10 mx-auto max-w-2xl rounded-xl border border-white/10 bg-white/5 p-6">
-                <h2 className="text-xl font-semibold text-white mb-5">Add a Password</h2>
+                <h2 className="text-xl font-semibold text-white mb-5">{editIndex === null ? "Add a Password" : "Edit Password"}</h2>
 
                 <div className='flex flex-col gap-4'>
                     <input value={website} onChange={(e)=>setWebsite(e.target.value)} type="text" placeholder="Website" className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white outline-none"/>
@@ -85,7 +107,7 @@ const Manager = () => {
                         </button>
                     </div>
 
-                    <button onClick={savePassword} className="rounded-lg bg-purple-600 px-5 py-3 font-medium text-white hover:bg-purple-500"> Save Password </button>
+                    <button onClick={savePassword} className="rounded-lg bg-purple-600 px-5 py-3 font-medium text-white hover:bg-purple-500"> {editIndex === null ? "Save Password" : "Update Password"} </button>
                 </div>
             </section>
 
