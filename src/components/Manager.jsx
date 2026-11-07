@@ -27,7 +27,7 @@ const Manager = () => {
 
 
     const savePassword = () => {
-        if(website == "" || username == "" || password == ""){
+        if(website.trim() === "" || username.trim() === "" || password.trim() === ""){
             alert("Please fill in all fields!");
             return;
         }
@@ -61,7 +61,16 @@ const Manager = () => {
     const handleDelete = (index) =>{
         const updatedPasswords = passwords.filter((item,i)=> i!==index); //.filter() creates a new array 
         setPasswords(updatedPasswords); //we set our password array to the new array 
-    }
+
+        if(editIndex == index){ //Deleting the password you're currently editing: Cancel editing and clear the fomr
+            setEditIndex(null);
+            setWebsite("");
+            setUsername("");
+            setPassword("");
+        }else if (editIndex != null && editIndex>index){ //Deleting an entry before the one you're editing: Decrease editIndex by 1 because the indexes shifted 
+            setEditIndex(editIndex-1);
+        }
+    };
 
     const handleEdit = (index) => {
         setWebsite(passwords[index].website);
