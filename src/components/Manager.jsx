@@ -8,6 +8,7 @@ const Manager = () => {
     const [password, setPassword] = useState("")
 
     const [passwords, setPasswords] = useState([]); //saved credentials
+    //Every time the save password button is clicked a new object like the following will be appende din this array
     // Index 0
     // GitHub
     // Username: sam
@@ -22,6 +23,18 @@ const Manager = () => {
     // LinkedIn
     // Username: sam
     // Password: •••••••
+
+
+    const savePassword = () => {
+        const newPassword = {
+            website: website,
+            username: username,
+            password: password
+        }
+
+        setPasswords([...passwords, newPassword]); //append the newPassword in the passowrds array 
+        //... spread operator copies existing elements into the new array
+    }
 
   return (
     <>
@@ -59,7 +72,7 @@ const Manager = () => {
                         </button>
                     </div>
 
-                    <button className="rounded-lg bg-purple-600 px-5 py-3 font-medium text-white hover:bg-purple-500"> Save Password </button>
+                    <button onClick={savePassword} className="rounded-lg bg-purple-600 px-5 py-3 font-medium text-white hover:bg-purple-500"> Save Password </button>
                 </div>
             </section>
 
@@ -68,27 +81,26 @@ const Manager = () => {
                 Your Saved Passwords
             </h2>
 
-            <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+            <div className='flex flex-col gap-4'>
 
-                <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-white">
-                        GitHub
-                    </h3>
+                {passwords.map((item, index) => (
+                    <div key = {index} className="rounded-xl border border-white/10 bg-white/5 p-6">
+                        <div className='flex items-center justify-between mb-4'>
+                            <h3 className='text-lg font-semibold text-white'>
+                                {item.website}
+                            </h3>
+                            <div className='flex gap-3'>
+                                <button className='text-purple-400'>Edit</button>
+                                <button className='text-red-400'>Delete</button>
+                            </div>
+                        </div>
 
-                    <div className="flex gap-3">
-                        <button className="text-purple-400 hover:text-purple-300">
-                            Edit
-                        </button>
-                        <button className="text-red-400 hover:text-red-300">
-                            Delete
-                        </button>
+                        <div className='flex flex-col gap-2 text-gray-400'>
+                            <p>Username: {item.username}</p>
+                            <p>Password: {"•".repeat(item.password.length)}</p>
+                        </div>
                     </div>
-                </div>
-
-                <div className="flex flex-col gap-2 text-gray-400">
-                    <p>Username: sopranos</p>
-                    <p>Password: ••••••••••</p>
-                </div>
+                ))}
 
             </div>
         </section>
