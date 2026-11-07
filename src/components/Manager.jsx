@@ -44,6 +44,11 @@ const Manager = () => {
         setPassword("")
     }
 
+    const handleDelete = (index) =>{
+        const updatedPasswords = passwords.filter((item,i)=> i!==index); //.filter() creates a new array 
+        setPasswords(updatedPasswords); //we set our password array to the new array 
+    }
+
   return (
     <>
         <div className="fixed inset-0 -z-10 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
@@ -98,8 +103,8 @@ const Manager = () => {
                                 {item.website}
                             </h3>
                             <div className='flex gap-3'>
-                                <button className='text-purple-400'>Edit</button>
-                                <button className='text-red-400'>Delete</button>
+                                <button onClick={()=>handleEdit(index)} className='text-purple-400'>Edit</button>
+                                <button onClick={()=>handleDelete(index)} className='text-red-400'>Delete</button>
                             </div>
                         </div>
 
