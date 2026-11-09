@@ -8,6 +8,10 @@ const PasswordCard = ({
     handleDelete
 }) => {
     const [showPassword, setShowPassword] = useState(false);
+
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text);
+    }
     
   return (
     <div className="rounded-xl border border-white/10 bg-white/5 p-6">
@@ -22,14 +26,24 @@ const PasswordCard = ({
         </div>
 
         <div className='flex flex-col gap-2 text-gray-400'>
-            <p>Username: {item.username}</p>
+            <div className="flex items-center gap-2">
+                <p>Username: {item.username}</p>
+                <button type="button" onClick={() => copyToClipboard(item.username)}>
+                    <img src="/icons/copy.svg" alt="" className='w-4 h-4 cursor-pointer'/>
+                </button>
+            </div>
+
             <div className='flex items-center gap-2'>
                 <p>
                     Password: {showPassword? item.password:"•".repeat(item.password.length)}
                 </p>
 
                 <button type='button' onClick={()=> setShowPassword(!showPassword)}>
-                    <img src={showPassword? "/icons/eye-open.svg":"/icons/eye-closed.svg"} alt="Toggle password visibility" className='w-5 h-5 invert'/>
+                    <img src={showPassword? "/icons/eye-open.svg":"/icons/eye-closed.svg"} alt="Toggle password visibility" className='w-4 h-4 cursor-pointer invert'/>
+                </button>
+
+                <button type="button" onClick={() => copyToClipboard(item.password)}>
+                    <img src="/icons/copy.svg" alt="" className='w-4 h-4 cursor-pointer'/>
                 </button>
             </div>
         </div>
