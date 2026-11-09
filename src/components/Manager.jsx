@@ -103,6 +103,7 @@ const Manager = () => {
                 setShowPassword={setShowPassword}
                 editIndex={editIndex}
                 savePassword={savePassword}
+                setEditIndex={setEditIndex}
             />
 
             <section className="mt-10 mx-auto max-w-2xl">

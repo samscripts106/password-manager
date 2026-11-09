@@ -10,7 +10,8 @@ const PasswordForm = ({
     showPassword,
     setShowPassword,
     editIndex,
-    savePassword
+    savePassword,
+    setEditIndex
 }) => {
   return (
     <div>
@@ -41,6 +42,21 @@ const PasswordForm = ({
                     </div>
 
                     <button onClick={savePassword} className="rounded-lg bg-purple-600 px-5 py-3 font-medium text-white hover:bg-purple-500"> {editIndex === null ? "Save Password" : "Update Password"} </button>
+
+                    {editIndex !== null && (
+                        <button
+                            type = "button"
+                            onClick={()=>{
+                                setEditIndex(null);
+                                setWebsite("");
+                                setUsername("");
+                                setPassword("");
+                            }}
+                            className='rounded-lg border border-white/20 px-5 py-3 text-gray-300 hover:bg-white/10'
+                        >
+                            Cancel
+                        </button>
+                    )}
                 </div>
             </section>
     </div>
