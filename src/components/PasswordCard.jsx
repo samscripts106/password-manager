@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState } from 'react'
 
 const PasswordCard = ({
     item,
@@ -6,6 +7,8 @@ const PasswordCard = ({
     handleEdit,
     handleDelete
 }) => {
+    const [showPassword, setShowPassword] = useState(false);
+    
   return (
     <div className="rounded-xl border border-white/10 bg-white/5 p-6">
         <div className='flex items-center justify-between mb-4'>
@@ -20,7 +23,15 @@ const PasswordCard = ({
 
         <div className='flex flex-col gap-2 text-gray-400'>
             <p>Username: {item.username}</p>
-            <p>Password: {"•".repeat(item.password.length)}</p>
+            <div className='flex items-center gap-2'>
+                <p>
+                    Password: {showPassword? item.password:"•".repeat(item.password.length)}
+                </p>
+
+                <button type='button' onClick={()=> setShowPassword(!showPassword)}>
+                    <img src={showPassword? "/icons/eye-open.svg":"/icons/eye-closed.svg"} alt="Toggle password visibility" className='w-5 h-5 invert'/>
+                </button>
+            </div>
         </div>
     </div>
   )
