@@ -8,9 +8,15 @@ const PasswordCard = ({
     handleDelete
 }) => {
     const [showPassword, setShowPassword] = useState(false);
+    const [copiedField, setCopiedField] = useState("");
 
-    const copyToClipboard = (text) => {
-        navigator.clipboard.writeText(text);
+    const copyToClipboard = async (text,field) => {
+        await navigator.clipboard.writeText(text);
+        setCopiedField(field);
+
+        setTimeout(()=>{
+            setCopiedField("");
+        }, 1500);
     }
     
   return (
@@ -28,9 +34,12 @@ const PasswordCard = ({
         <div className='flex flex-col gap-2 text-gray-400'>
             <div className="flex items-center gap-2">
                 <p>Username: {item.username}</p>
-                <button type="button" onClick={() => copyToClipboard(item.username)}>
+                <button type="button" onClick={() => copyToClipboard(item.username, "username")}>
                     <img src="/icons/copy.svg" alt="" className='w-4 h-4 cursor-pointer'/>
                 </button>
+                {copiedField === "username" && (
+                    <span className="text-green-400 text-xs">Copied!</span>
+                )}
             </div>
 
             <div className='flex items-center gap-2'>
@@ -42,9 +51,12 @@ const PasswordCard = ({
                     <img src={showPassword? "/icons/eye-open.svg":"/icons/eye-closed.svg"} alt="Toggle password visibility" className='w-4 h-4 cursor-pointer invert'/>
                 </button>
 
-                <button type="button" onClick={() => copyToClipboard(item.password)}>
+                <button type="button" onClick={() => copyToClipboard(item.password, "password")}>
                     <img src="/icons/copy.svg" alt="" className='w-4 h-4 cursor-pointer'/>
                 </button>
+                {copiedField === "password" && (
+                    <span className="text-green-400 text-xs">Copied!</span>
+                )}
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { useEffect } from 'react'
 import PasswordForm from './PasswordForm'
 import PasswordCard from './PasswordCard'
 
@@ -10,22 +11,16 @@ const Manager = () => {
     const [password, setPassword] = useState("")
     const [editIndex, setEditIndex] = useState(null) //null means we are adding a new password
 
-    const [passwords, setPasswords] = useState([]); //saved credentials
-    //Every time the save password button is clicked a new object like the following will be appende din this array
-    // Index 0
-    // GitHub
-    // Username: sam
-    // Password: •••••••
-
-    // Index 1
-    // Google
-    // Username: sam
-    // Password: •••••••
-
-    // Index 2
-    // LinkedIn
-    // Username: sam
-    // Password: •••••••
+    //The function passed to useState runs only during the initial state setup, not on every render (Lazy initialisation)
+    const [passwords, setPasswords] = useState(()=>{
+        const savedPasswords = localStorage.getItem("passwords"); //retreives the saved string
+        return savedPasswords? JSON.parse(savedPasswords):[]; //JSON.parse() converts that string back into a JS array
+    }); //saved credentials
+    
+    useEffect(()=>{
+        localStorage.setItem("passwords", JSON.stringify(passwords)); //"passwords" is a new key we're creating in LocalStrorage (Like a label on the storage box)
+        //passwords is the actual data put into the box
+    }, [passwords]);
 
 
     const savePassword = () => {
