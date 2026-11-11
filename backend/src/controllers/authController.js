@@ -1,7 +1,8 @@
-router.post('/register', (req,res)=>{ //defines what happens when a POST req reaches this endpoint 
+//contains the function that handles that request
+const register = (req, res) => {
     res.json({
-        message: 'Router route working!'
+        message: 'Register route working!'
     });
-});
+};
 
-module.exports = {register};
+module.exports = { register };

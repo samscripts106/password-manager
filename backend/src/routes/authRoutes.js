@@ -1,3 +1,4 @@
+//authRoutes defines an endpoint
 const express = require('express');
 const {register} = require('../controllers/authController');
 
