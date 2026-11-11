@@ -1,11 +1,9 @@
-const express = require('express');
+//server.js starts the application and listens on a port 
 
-const app = express(); //creates an express application
-
-app.get('/', (req,res)=>{ //defines a route that responds to GET reqs
-    res.send('PassVault backend is running!');
-});
+const app = require('./src/app')
 
 app.listen(5001, ()=>{ //starts the server on port 5001
     console.log('Server runnning on port 5001');
 });
+
+
