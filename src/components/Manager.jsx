@@ -10,6 +10,7 @@ const Manager = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [editIndex, setEditIndex] = useState(null) //null means we are adding a new password
+    const [searchTerm, setSearchTerm] = useState("");
 
     //The function passed to useState runs only during the initial state setup, not on every render (Lazy initialisation)
     const [passwords, setPasswords] = useState(()=>{
@@ -77,6 +78,13 @@ const Manager = () => {
         setEditIndex(index);
     }
 
+    const filteredPasswords = passwords.filter((item)=>
+        item.website.toLowerCase().includes(searchTerm.toLowerCase())
+        //.filter() checks every PW obj 
+        //toLowerCase() makes the search case insensitive 
+        //.includes() checks whether the website contains the search text 
+    );
+
   return (
     <>
         <div className="fixed inset-0 -z-10 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"></div>
@@ -102,22 +110,30 @@ const Manager = () => {
             />
 
             <section className="mt-10 mx-auto max-w-2xl">
-            <h2 className="text-xl font-semibold text-white mb-4">
-                Your Saved Passwords
-            </h2>
+            <div className='flex items-center justify-between mb-4'>
+                <h2 className="text-xl font-semibold text-white mb-4">
+                    Your Saved Passwords
+                </h2>
+
+                <input type="text" placeholder="Search websites..." value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} className="w-64 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white outline-none focus:border-purple-500 placeholder:text-gray-500"/>
+            </div>
 
             <div className='flex flex-col gap-4'>
-
-                {passwords.map((item, index) => (
-                    <PasswordCard
-                        key={index}
-                        item={item}
-                        index={index}
-                        handleEdit={handleEdit}
-                        handleDelete={handleDelete}
-                    />
-                ))}
-
+                {filteredPasswords.length > 0 ? (
+                    filteredPasswords.map((item, index) => (
+                        <PasswordCard
+                            key={index}
+                            item={item}
+                            index={passwords.indexOf(item)}
+                            handleEdit={handleEdit}
+                            handleDelete={handleDelete}
+                        />
+                    ))
+                ) : (
+                    <p className="text-center text-gray-400 py-6">
+                        No passwords found.
+                    </p>
+                )}
             </div>
         </section>
         </main>
