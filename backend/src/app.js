@@ -1,23 +1,22 @@
-//app.js configures Express and defines how req are handled 
+// app.js configures Express and defines how requests are handled
 
 const express = require('express');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express(); //creates an express application
 
-const authRoutes = require('./routes/authRoutes'); //mounts the application router under /api/auth
+app.use(express.json()); // Parse incoming JSON
 
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes); // Mount authentication routes
 
-app.use(express.json()); //express.json() is built-in express middleware that parses incoming JSON
-
-app.get('/', (req,res)=>{ //defines a route that responds to GET reqs
+app.get('/', (req, res) => { // defines a route that responds to GET reqs
     res.send('PassVault backend is running!');
 });
 
-app.post('/api/test', (req,res)=>{ //registers an endpoint that accepts POST req
-    console.log(req.body); //req.json contains the parsed JSON sent by the frontend
+app.post('/api/test', (req, res) => { // registers an endpoint that accepts POST req
+    console.log(req.body);
 
-    res.json({ //sends a JSON response back
+    res.json({
         message: 'Data received successfully!',
         receivedData: req.body
     });
