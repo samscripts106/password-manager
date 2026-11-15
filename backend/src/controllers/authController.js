@@ -71,6 +71,8 @@ const login = async (req, res) => {
             })
         }
 
+        req.session.userId = user._id.toString(); //req.session accesses the current user's sessionand userID stores that user's MongoDB ID inside the session
+
         res.status(200).json({
             message: 'Login successful',
             userId: user._id
