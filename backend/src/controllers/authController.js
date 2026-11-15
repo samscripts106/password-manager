@@ -86,4 +86,20 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { register,login };
+const logout = (req, res) =>{
+    req.session.destroy((err)=>{ // destroys the current session stored in mongoDB
+        if(err){
+            return res.status(500).json({
+                message: 'Logout failed'
+            });
+        }
+
+        res.clearCookie('connect.sid'); // removes the sesson cookie from the browser
+
+        res.status(200).json({
+            message: 'Logout successfull'
+        });
+    });
+};
+
+module.exports = { register,login, logout };
