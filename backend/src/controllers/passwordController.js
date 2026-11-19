@@ -31,4 +31,23 @@ const createPassword  = async (req,res) => {
     }
 };
 
-module.exports = { createPassword };
+//Retrieve saved passwords (Find all pw docs whose user field matches the ID of the currently logged-in user)
+const getPasswords = async (req,res) => {
+    try{
+        const passwords = await Password.find({ //returns an array of pws
+            user: req.session.userId //identifies the current logged in user
+        });
+
+        res.status(200).json({
+            passwords
+        });
+    }catch (error){
+        console.error('Get passwords error:', error.message);
+
+        res.status(500).json({
+            message: 'Internal Server error'
+        });
+    }
+};
+
+module.exports = { createPassword, getPasswords };
