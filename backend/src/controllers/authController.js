@@ -54,6 +54,9 @@ const login = async (req, res) => {
 
         const user = await User.findOne({email}); //searches the users collection
 
+        console.log("Connected database:", User.db.name);
+        console.log("Found user:", user);
+
         if(!user){
             return res.status(401).json({
                 message: 'Invalid email or password'

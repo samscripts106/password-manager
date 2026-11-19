@@ -2,6 +2,7 @@
 
 const express = require('express');
 const authRoutes = require('./routes/authRoutes');
+const passwordRoutes = require('./routes/passwordRoutes');
 
 const session = require('express-session');
 const { MongoStore } = require('connect-mongo');
@@ -27,6 +28,7 @@ app.use(session({
 }))
 
 app.use('/api/auth', authRoutes); // Mount authentication routes
+app.use('/api/passwords', passwordRoutes) // Mount password routes 
 
 app.get('/', (req, res) => { // defines a route that responds to GET reqs
     res.send('PassVault backend is running!');
