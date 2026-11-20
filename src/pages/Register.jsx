@@ -1,7 +1,11 @@
-
+import { useState } from 'react'
 import AuthLayout from '../components/AuthLayout';
 
 const Register = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
     return (
         <AuthLayout>
             <div className="space-y-6">
@@ -25,6 +29,7 @@ const Register = () => {
                             type="email"
                             placeholder="you@example.com"
                             className="w-full rounded-lg bg-[#1B2238] border border-gray-700 px-4 py-3 outline-none focus:border-violet-500"
+                            value={email} onChange={(e)=>setEmail(e.target.value)}
                         />
                     </div>
 
@@ -36,6 +41,7 @@ const Register = () => {
                             type="password"
                             placeholder="Enter your master password"
                             className="w-full rounded-lg bg-[#1B2238] border border-gray-700 px-4 py-3 outline-none focus:border-violet-500"
+                            value={password} onChange={(e)=>setPassword(e.target.value)}
                         />
                     </div>
 
@@ -47,6 +53,7 @@ const Register = () => {
                             type="password"
                             placeholder="Confirm your master password"
                             className="w-full rounded-lg bg-[#1B2238] border border-gray-700 px-4 py-3 outline-none focus:border-violet-500"
+                             value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}
                         />
                     </div>
 
