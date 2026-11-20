@@ -19,6 +19,11 @@ const Register = () => {
             return;
         }
 
+        if (password.length < 8) {
+            setError('Master password must be at least 8 characters long.');
+            return;
+        }
+
         if (password !== confirmPassword) {
             setError('Passwords do not match.');
             return;
@@ -26,6 +31,21 @@ const Register = () => {
 
         console.log('Registration form submitted!');
     };
+
+    const getPasswordStrength = (password) => {
+        if (!password) return 0;
+
+        let score = 0;
+
+        if (password.length >= 8) score++;
+        if (/[A-Z]/.test(password)) score++;
+        if (/[0-9]/.test(password)) score++;
+        if (/[^A-Za-z0-9]/.test(password)) score++;
+
+        return score;
+    };
+
+    const strength = getPasswordStrength(password);
 
     return (
         <AuthLayout>
@@ -83,6 +103,39 @@ const Register = () => {
                                 />
                             </button>
                         </div>
+                        {password && (
+                        <div className="mt-3 space-y-2">
+                            <div className="flex gap-1.5">
+                                {[1, 2, 3, 4].map((level) => (
+                                    <div
+                                        key={level}
+                                        className={`h-1.5 flex-1 rounded-full ${
+                                            strength >= level
+                                                ? strength === 1
+                                                    ? 'bg-red-500'
+                                                    : strength === 2
+                                                    ? 'bg-yellow-500'
+                                                    : strength === 3
+                                                    ? 'bg-blue-500'
+                                                    : 'bg-green-500'
+                                                : 'bg-gray-700'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+
+                            <p className="text-xs text-gray-500">
+                                Use at least 8 characters, including an uppercase letter,
+                                a number, and a special character.
+                            </p>
+
+                            <p className="text-xs text-gray-400">
+                                Password strength: {
+                                    ['','Weak','Fair','Good','Strong'][strength]
+                                }
+                            </p>
+                        </div>
+                    )}
                     </div>
 
                     <div>
