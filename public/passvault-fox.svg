@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Geometric orange fox head logo">
+  <g stroke="none">
+    <!-- ears -->
+    <path fill="#F45A12" d="M70 42 198 145 143 278 44 190Z"/>
+    <path fill="#FF7A1A" d="M70 42 112 176 143 278 44 190Z"/>
+    <path fill="#FFF4E9" d="M91 104 143 164 133 235 82 181Z"/>
+    <path fill="#F45A12" d="M442 42 314 145 369 278 468 190Z"/>
+    <path fill="#FF7A1A" d="M442 42 400 176 369 278 468 190Z"/>
+    <path fill="#FFF4E9" d="M421 104 369 164 379 235 430 181Z"/>
+    <!-- head silhouette -->
+    <path fill="#F45A12" d="M112 178 198 130 314 130 400 178 470 338 350 390 256 458 162 390 42 338Z"/>
+    <!-- forehead facets -->
+    <path fill="#FF8A1D" d="M112 178 198 130 256 276 160 302Z"/>
+    <path fill="#FFB02E" d="M198 130 314 130 256 276Z"/>
+    <path fill="#FF8A1D" d="M314 130 400 178 352 302 256 276Z"/>
+    <!-- cheek facets -->
+    <path fill="#F04D0C" d="M112 178 160 302 42 338Z"/>
+    <path fill="#FF9A1F" d="M160 302 256 276 222 397 42 338Z"/>
+    <path fill="#F45A12" d="M400 178 470 338 352 302Z"/>
+    <path fill="#FF9A1F" d="M352 302 470 338 290 397 256 276Z"/>
+    <!-- muzzle bridge -->
+    <path fill="#F15A10" d="M256 276 222 397 256 414 290 397Z"/>
+    <path fill="#FF7B17" d="M256 276 290 397 256 414Z"/>
+    <!-- eyes -->
+    <path fill="#171318" d="m145 291 87 35-50 27Z"/>
+    <path fill="#171318" d="m367 291-87 35 50 27Z"/>
+    <!-- muzzle / cheeks -->
+    <path fill="#FFF8F1" d="m42 338 180 59 34 16-66 38-76-35Z"/>
+    <path fill="#F1E8E1" d="m470 338-180 59-34 16 66 38 76-35Z"/>
+    <path fill="#FFFFFF" d="m222 397 34 16 34-16 32 54-66 40-66-40Z"/>
+    <path fill="#E9DED7" d="m256 413 34-16-34 94Z"/>
+    <!-- nose -->
+    <path fill="#171318" d="m226 407 30-12 30 12-30 22Z"/>
+    <!-- mouth -->
+    <path fill="none" stroke="#171318" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" d="M256 429v20m0 0-24-13m24 13 24-13"/>
+  </g>
+</svg>

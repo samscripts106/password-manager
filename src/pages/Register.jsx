@@ -6,6 +6,8 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -46,35 +48,72 @@ const Register = () => {
                         </label>
                         <input
                             type="email"
+                            required
                             placeholder="you@example.com"
                             className="w-full rounded-lg bg-[#1B2238] border border-gray-700 px-4 py-3 outline-none focus:border-violet-500"
                             value={email} onChange={(e)=>setEmail(e.target.value)}
                         />
                     </div>
 
+                    
                     <div>
                         <label className="block text-sm mb-2">
                             Master password
                         </label>
-                        <input
-                            type="password"
-                            placeholder="Enter your master password"
-                            className="w-full rounded-lg bg-[#1B2238] border border-gray-700 px-4 py-3 outline-none focus:border-violet-500"
-                            value={password} onChange={(e)=>setPassword(e.target.value)}
-                        />
+
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                required
+                                placeholder="Enter your master password"
+                                className="w-full rounded-lg bg-[#1B2238] border border-gray-700 px-4 py-3 pr-12 outline-none focus:border-violet-500"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2"
+                            >
+                                <img
+                                    src={showPassword ? "/icons/eye-open.svg" : "/icons/eye-closed.svg"}
+                                    alt={showPassword ? "Hide password" : "Show password"}
+                                    className="w-5 h-5 invert"
+                                />
+                            </button>
+                        </div>
                     </div>
 
                     <div>
                         <label className="block text-sm mb-2">
                             Confirm password
                         </label>
-                        <input
-                            type="password"
-                            placeholder="Confirm your master password"
-                            className="w-full rounded-lg bg-[#1B2238] border border-gray-700 px-4 py-3 outline-none focus:border-violet-500"
-                             value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}
-                        />
+
+                        <div className="relative">
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                required
+                                placeholder="Confirm your master password"
+                                className="w-full rounded-lg bg-[#1B2238] border border-gray-700 px-4 py-3 pr-12 outline-none focus:border-violet-500"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2"
+                            >
+                                <img
+                                    src={showConfirmPassword ? "/icons/eye-open.svg" : "/icons/eye-closed.svg"}
+                                    alt={showConfirmPassword ? "Hide password" : "Show password"}
+                                    className="w-5 h-5 invert"
+                                />
+                            </button>
+                        </div>
                     </div>
+
 
                     {error && (
                         <p className='text-red-400 text-sm'>
