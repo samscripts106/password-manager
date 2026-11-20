@@ -50,4 +50,50 @@ const getPasswords = async (req,res) => {
     }
 };
 
-module.exports = { createPassword, getPasswords };
+//Update an existing password entry
+const updatePassword = async(req,res) =>{
+    try{
+        const { id } = req.params;
+        const { website, username, password } = req.body;
+
+        if (!website || !username || !password){
+            return res.status(400).json({
+                message: 'Website username and password are required'
+            });
+        }
+
+        const updatePassword = await Password.findOneAndUpdate(
+            { // Mongo DB searches for the requested documnet satisfying both the conditions
+                _id: id, // _id matches the requested ID
+                user: req.session.userId // user matches the currently logged-in user
+            },
+            {
+                website,
+                username,
+                password
+            },
+            {
+                new: true, // returns the updated documnet rather than the old one
+                runValidators: true // makes Mongoose runs schema validation on the updated fields
+            }
+        );
+
+        if(!updatePassword){
+            return res.status(400).json({
+                message: 'Password not found'
+            });
+        }
+
+        res.status(200).json({
+            message: 'Password updated successfully'
+        })
+    } catch (error) {
+        console.error('Update password error:', error.message);
+        
+        res.status(500).json({
+            message: 'Internal server error'
+        });
+    }
+};
+
+module.exports = { createPassword, getPasswords, updatePassword };
