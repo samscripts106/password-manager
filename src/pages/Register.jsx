@@ -5,6 +5,25 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        setError(''); //clears any previous errors
+
+        if (!email || !password || !confirmPassword) {
+            setError('Please fill in all fields.');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
+
+        console.log('Registration form submitted!');
+    };
 
     return (
         <AuthLayout>
@@ -19,7 +38,7 @@ const Register = () => {
                     </p>
                 </div>
 
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleSubmit}>
 
                     <div>
                         <label className="block text-sm mb-2">
@@ -56,6 +75,12 @@ const Register = () => {
                              value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)}
                         />
                     </div>
+
+                    {error && (
+                        <p className='text-red-400 text-sm'>
+                            {error}
+                        </p>
+                    )}
 
                     <button
                         type="submit"
