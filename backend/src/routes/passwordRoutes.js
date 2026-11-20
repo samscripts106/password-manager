@@ -1,7 +1,7 @@
 const express = require('express');
 const requireAuth = require('../middleware/authMiddleware.js')
 
-const { createPassword,getPasswords,updatePassword } = require('../controllers/passwordController');
+const { createPassword,getPasswords,updatePassword, deletePassword } = require('../controllers/passwordController');
 
 const router = express.Router(); //separate router for password-related endpoints 
 
@@ -11,5 +11,6 @@ router.post('/', requireAuth, createPassword); //creates a new password card (co
 router.get('/', requireAuth, getPasswords); //retrieve the saved passwords
 router.put('/:id', requireAuth, updatePassword); // /:id means the URL accepts a dynamic ID 
 // PUT http://localhost:5001/api/passwords/674abc123 express extracts 674abc123 into req.params.id
+router.delete('/:id', requireAuth, deletePassword); // /:id identifies the specific pw doc we want to delete using its mongoDB ID
 
 module.exports = router;

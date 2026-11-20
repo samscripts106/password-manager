@@ -96,4 +96,32 @@ const updatePassword = async(req,res) =>{
     }
 };
 
-module.exports = { createPassword, getPasswords, updatePassword };
+    //Delete an existing password entry
+    const deletePassword = async(req,res) => {
+        try{
+            const {id} = req.params;
+
+            const deletedPassword = await Password.findOneAndDelete({
+                _id: id, //MongoDB ID of the pw we are willing to delete
+                user: req.session.userId //which user it belongs to
+            });
+
+            if(!deletedPassword){
+                return res.status(404).json({
+                    message: 'Password not found'
+                });
+            }
+
+            res.status(200).json({
+                message: 'Password deleted successfully'
+            });
+        }catch(error){
+            console.error('Delete password error:', error.message);
+
+            res.status(500).json({
+                message: 'Internal Server error'
+            });
+        }
+    };
+
+module.exports = { createPassword, getPasswords, updatePassword, deletePassword };
