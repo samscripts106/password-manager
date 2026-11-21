@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link,NavLink } from 'react-router-dom'
 
 const Navbar = () => {
   return (
@@ -21,14 +21,24 @@ const Navbar = () => {
         {/* Desktop navigation */}
         <ul className="hidden sm:flex items-center gap-6 text-gray-300">
           <li>
-            <Link to="/vault" className="hover:text-white transition-colors">
+            <NavLink
+            to="/vault"
+            className={({ isActive }) =>
+                `transition-colors ${isActive ? 'text-purple-400 font-semibold' : 'text-gray-300 hover:text-white'}`
+            }
+            >
                 Vault
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/settings" className="hover:text-white transition-colors">
-                Settings
-            </Link>
+          <NavLink
+          to="/settings"
+          className={({ isActive }) =>
+            `transition-colors ${isActive ? 'text-purple-400 font-semibold' : 'text-gray-300 hover:text-white'}`
+           }
+          >
+            Settings
+          </NavLink>
           </li>
           <li>
             <a className="hover:opacity-70 transition-opacity" href="#">
@@ -56,12 +66,22 @@ const Navbar = () => {
 
       {/* Mobile navigation */}
       <div className="sm:hidden flex items-center justify-center gap-10 mt-3 pt-3 border-t border-white/10 text-gray-300">
-        <Link to="/vault" className="hover:text-white transition-colors">
+        <NavLink
+        to="/vault"
+        className={({ isActive }) =>
+            `transition-colors ${isActive ? 'text-purple-400 font-semibold' : 'text-gray-300 hover:text-white'}`
+        }
+        >
             Vault
-        </Link>
-        <Link to="/settings" className="hover:text-white transition-colors">
+        </NavLink>
+        <NavLink
+        to="/settings"
+        className={({ isActive }) =>
+            `transition-colors ${isActive ? 'text-purple-400 font-semibold' : 'text-gray-300 hover:text-white'}`
+        }
+        >
             Settings
-        </Link>
+        </NavLink>
       </div>
 
     </nav>
