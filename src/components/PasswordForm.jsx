@@ -8,14 +8,14 @@ const PasswordForm = ({
     setPassword,
     showPassword,
     setShowPassword,
-    editIndex,
+    editId,
     savePassword,
-    setEditIndex
+    setEditId
 }) => {
   return (
     <div>
       <section className="mt-10 mx-auto max-w-2xl rounded-xl border border-white/10 bg-white/5 p-6">
-                <h2 className="text-xl font-semibold text-white mb-5">{editIndex === null ? "Add a Password" : "Edit Password"}</h2>
+                <h2 className="text-xl font-semibold text-white mb-5">{editId === null ? "Add a Password" : "Edit Password"}</h2>
 
                 <div className='flex flex-col gap-4'>
                     <input value={website} onChange={(e)=>setWebsite(e.target.value)} type="text" placeholder="Website" className="w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white outline-none"/>
@@ -40,13 +40,13 @@ const PasswordForm = ({
                         </button>
                     </div>
 
-                    <button onClick={savePassword} className="rounded-lg bg-purple-600 px-5 py-3 font-medium text-white hover:bg-purple-500"> {editIndex === null ? "Save Password" : "Update Password"} </button>
+                    <button onClick={savePassword} className="rounded-lg bg-purple-600 px-5 py-3 font-medium text-white hover:bg-purple-500"> {editId === null ? "Save Password" : "Update Password"} </button>
 
-                    {editIndex !== null && (
+                    {editId !== null && (
                         <button
                             type = "button"
                             onClick={()=>{
-                                setEditIndex(null);
+                                setEditId(null);
                                 setWebsite("");
                                 setUsername("");
                                 setPassword("");

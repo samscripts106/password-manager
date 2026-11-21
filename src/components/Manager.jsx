@@ -8,13 +8,16 @@ const Manager = () => {
     const [website, setWebsite] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [editIndex, setEditIndex] = useState(null) //null means we are adding a new password
+    const [editId, setEditId] = useState(null) //null means we are adding a new password
     const [searchTerm, setSearchTerm] = useState("");
 
     //The function passed to useState runs only during the initial state setup, not on every render (Lazy initialisation)
     const [passwords, setPasswords] = useState(()=>{
-        const savedPasswords = localStorage.getItem("passwords"); //retreives the saved string
-        return savedPasswords? JSON.parse(savedPasswords):[]; //JSON.parse() converts that string back into a JS array
+        const savedPasswords = JSON.parse(localStorage.getItem("passwords")) || []; //retreives the saved array
+        return savedPasswords.map(item => ({
+            ...item,
+            id: item.id || crypto.randomUUID() //preserves an existing ID or generates one if missing
+        })); 
     }); //saved credentials
     
     useEffect(()=>{
@@ -30,51 +33,52 @@ const Manager = () => {
         }
 
         const newPassword = {
+            id: crypto.randomUUID(),
             website: website,
             username: username,
             password: password
         }
 
-        if(editIndex === null){
+        if(editId === null){
             //Adding a new password
-            setPasswords([...passwords, newPassword]); //append the newPassword in the passowrds array 
+            setPasswords(prev => [...prev, newPassword]); //append the newPassword in the passowrds array 
             //... spread operator copies existing elements into the new array
         }else{
             //Update an existing password
-            const updatedPasswords = [...passwords];
-
-            updatedPasswords[editIndex] = newPassword;
-
-            setPasswords(updatedPasswords);
-            setEditIndex(null);
+            setPasswords(prev=>
+                prev.map(item =>
+                    item.id === editId? { ...item, website, username, password }:item
+                )
+            );
         } 
         
+        setEditId(null);
         //Clear the input fields 
-        setWebsite("")
-        setUsername("")
-        setPassword("")
+        setWebsite("");
+        setUsername("");
+        setPassword("");
     };
 
-    const handleDelete = (index) =>{
-        const updatedPasswords = passwords.filter((item,i)=> i!==index); //.filter() creates a new array 
-        setPasswords(updatedPasswords); //we set our password array to the new array 
+    const handleDelete = (id) =>{
+        setPasswords(prev=> prev.filter(item=> item.id!==id));
 
-        if(editIndex == index){ //Deleting the password you're currently editing: Cancel editing and clear the fomr
-            setEditIndex(null);
+        if (editId === id){
+            setEditId(null);
             setWebsite("");
             setUsername("");
             setPassword("");
-        }else if (editIndex != null && editIndex>index){ //Deleting an entry before the one you're editing: Decrease editIndex by 1 because the indexes shifted 
-            setEditIndex(editIndex-1);
         }
     };
 
-    const handleEdit = (index) => {
-        setWebsite(passwords[index].website);
-        setUsername(passwords[index].username);
-        setPassword(passwords[index].password);
+    const handleEdit = (id) => {
+        const item = passwords.find(item => item.id === id); //searches for the entry using unique ID
 
-        setEditIndex(index);
+        if(!item) return;
+
+        setWebsite(item.website);
+        setUsername(item.username);
+        setPassword(item.password);
+        setEditId(id);
     }
 
     const filteredPasswords = passwords.filter((item)=>
@@ -103,9 +107,9 @@ const Manager = () => {
                 setPassword={setPassword}
                 showPassword={showPassword}
                 setShowPassword={setShowPassword}
-                editIndex={editIndex}
+                editId={editId}
                 savePassword={savePassword}
-                setEditIndex={setEditIndex}
+                setEditId={setEditId}
             />
 
             <section className="mt-10 mx-auto max-w-2xl">
@@ -119,11 +123,11 @@ const Manager = () => {
 
             <div className='flex flex-col gap-4'>
                 {filteredPasswords.length > 0 ? (
-                    filteredPasswords.map((item, index) => (
+                    filteredPasswords.map((item) => (
                         <PasswordCard
-                            key={index}
+                            key={item.id} //stable identity for each card
                             item={item}
-                            index={passwords.indexOf(item)}
+                            id={item.id}
                             handleEdit={handleEdit}
                             handleDelete={handleDelete}
                         />

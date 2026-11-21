@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const PasswordCard = ({
     item,
-    index,
+    id,
     handleEdit,
     handleDelete
 }) => {
@@ -25,8 +25,8 @@ const PasswordCard = ({
                 {item.website}
             </h3>
             <div className='flex gap-3'>
-                <button onClick={()=>handleEdit(index)} className='text-purple-400 hover:font-bold'>Edit</button>
-                <button onClick={()=>handleDelete(index)} className='text-red-400 hover:font-bold'>Delete</button>
+                <button onClick={()=>handleEdit(id)} className='text-purple-400 hover:font-bold'>Edit</button>
+                <button onClick={()=>handleDelete(id)} className='text-red-400 hover:font-bold'>Delete</button>
             </div>
         </div>
 
