@@ -1,108 +1,91 @@
 
 const Settings = () => {
   return (
-    <main className="min-h-screen bg-[#0B1020] px-4 py-8 sm:px-8">
-      <div className="mx-auto max-w-4xl">
+    <main className="min-h-screen bg-[#0B1020] px-4 py-8 sm:px-8 text-white">
+      <div className="mx-auto max-w-3xl">
 
-        {/* Page heading */}
+        {/* Heading */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold">
             Settings
           </h1>
-          <p className="mt-2 text-gray-400">
-            Manage your account and vault preferences.
+          <p className="mt-1 text-sm text-gray-400">
+            Manage your security and vault preferences.
           </p>
         </div>
 
         <div className="flex flex-col gap-6">
 
-          {/* Account Settings */}
-          <section className="rounded-xl border border-white/10 bg-white/5 p-5 sm:p-6">
-            <div className="mb-5">
-              <h2 className="text-xl font-semibold text-white">
-                Account
-              </h2>
-              <p className="mt-1 text-sm text-gray-400">
-                Manage your PassVault account information.
-              </p>
-            </div>
+          {/* Security */}
+          <section className="rounded-xl border border-white/10 bg-[#151A35] p-5 sm:p-6">
+            <h2 className="text-lg font-semibold mb-4">
+              Security
+            </h2>
 
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-600/20 text-xl text-purple-400">
-                <span>U</span>
-              </div>
+            <div className="flex items-center justify-between gap-4 border-t border-white/10 py-4">
               <div>
-                <p className="font-medium text-white">Your Account</p>
-                <p className="text-sm text-gray-400">
-                  Account information and email address
+                <p className="font-medium">
+                  Change Master Password
+                </p>
+                <p className="mt-1 text-xs text-gray-400">
+                  Update your account password.
                 </p>
               </div>
-            </div>
-          </section>
 
-          {/* Security Settings */}
-          <section className="rounded-xl border border-white/10 bg-white/5 p-5 sm:p-6">
-            <div className="mb-5">
-              <h2 className="text-xl font-semibold text-white">
-                Security
-              </h2>
-              <p className="mt-1 text-sm text-gray-400">
-                Keep your account and passwords protected.
-              </p>
+              <button
+                disabled
+                className="shrink-0 text-sm text-purple-400 opacity-60 cursor-not-allowed"
+              >
+                Change →
+              </button>
             </div>
 
-            <div className="flex flex-col gap-5">
+            <div className="flex items-center justify-between gap-4 border-t border-white/10 py-4">
               <div>
-                <p className="font-medium text-white">Master Password</p>
-                <p className="mt-1 text-sm text-gray-400">
-                  Change the password used to access your account.
+                <p className="font-medium">
+                  Active Sessions
+                </p>
+                <p className="mt-1 text-xs text-gray-400">
+                  Review your signed-in devices.
                 </p>
               </div>
 
-              <div className="border-t border-white/10 pt-5">
-                <p className="font-medium text-white">Active Sessions</p>
-                <p className="mt-1 text-sm text-gray-400">
-                  Manage devices and sessions where your account is signed in.
+              <button
+                disabled
+                className="shrink-0 text-sm text-purple-400 opacity-60 cursor-not-allowed"
+              >
+                Manage →
+              </button>
+            </div>
+          </section>
+
+          {/* Vault */}
+          <section className="rounded-xl border border-white/10 bg-[#151A35] p-5 sm:p-6">
+            <h2 className="text-lg font-semibold mb-4">
+              Vault
+            </h2>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-white/10 pt-4">
+              <div>
+                <p className="font-medium">
+                  Automatic Lock
+                </p>
+                <p className="mt-1 text-xs text-gray-400">
+                  Lock your vault after inactivity.
                 </p>
               </div>
-            </div>
-          </section>
 
-          {/* Vault Settings */}
-          <section className="rounded-xl border border-white/10 bg-white/5 p-5 sm:p-6">
-            <div className="mb-5">
-              <h2 className="text-xl font-semibold text-white">
-                Vault
-              </h2>
-              <p className="mt-1 text-sm text-gray-400">
-                Configure how your password vault behaves.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-medium text-white">Automatic Lock</p>
-              <p className="mt-1 text-sm text-gray-400">
-                Choose how long your vault can remain inactive before locking.
-              </p>
-            </div>
-          </section>
-
-          {/* Appearance Settings */}
-          <section className="rounded-xl border border-white/10 bg-white/5 p-5 sm:p-6">
-            <div className="mb-5">
-              <h2 className="text-xl font-semibold text-white">
-                Appearance
-              </h2>
-              <p className="mt-1 text-sm text-gray-400">
-                Customize how PassVault looks.
-              </p>
-            </div>
-
-            <div>
-              <p className="font-medium text-white">Theme</p>
-              <p className="mt-1 text-sm text-gray-400">
-                Dark theme is currently the default appearance.
-              </p>
+              <select
+                disabled
+                defaultValue="5"
+                className="w-full sm:w-40 rounded-lg border border-white/10 bg-[#0B1020] px-3 py-2 text-sm text-gray-300 outline-none opacity-60 cursor-not-allowed"
+              >
+                <option value="immediately">Immediately</option>
+                <option value="1">1 minute</option>
+                <option value="5">5 minutes</option>
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+              </select>
             </div>
           </section>
 
