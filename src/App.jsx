@@ -7,6 +7,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import ForgotPassword from './pages/ForgotPassword'
 import Settings from './pages/Settings'
+import Profile from './pages/Profile'
 
 function App() {
 
@@ -28,12 +29,24 @@ function App() {
           }
         />
 
+        {/* Settings page */}
         <Route
           path="/settings"
           element={
             <>
               <Navbar />
               <Settings />
+            </>
+          }
+        />
+
+        {/* Profile page */}
+        <Route
+          path="/profile"
+          element={
+            <>
+              <Navbar />
+              <Profile />
             </>
           }
         />

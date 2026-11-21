@@ -41,25 +41,37 @@ const Navbar = () => {
           </NavLink>
           </li>
           <li>
-            <a className="hover:opacity-70 transition-opacity" href="#">
-              <img
+            <NavLink
+            to="/profile"
+            aria-label="My profile"
+            className={({ isActive }) =>
+                `transition-opacity ${isActive ? 'opacity-100' : 'opacity-70 hover:opacity-100'}`
+            }
+            >
+            <img
                 src="/icons/profile.svg"
                 alt="Profile"
                 className="w-7 h-7"
-              />
-            </a>
+            />
+            </NavLink>
           </li>
         </ul>
 
         {/* Mobile profile */}
         <div className="sm:hidden">
-          <a href="#">
+          <NavLink
+            to="/profile"
+            aria-label="My profile"
+            className={({ isActive }) =>
+                `transition-opacity ${isActive ? 'opacity-100' : 'opacity-70 hover:opacity-100'}`
+            }
+            >
             <img
-              src="/icons/profile.svg"
-              alt="Profile"
-              className="w-7 h-7"
+                src="/icons/profile.svg"
+                alt="Profile"
+                className="w-7 h-7"
             />
-          </a>
+            </NavLink>
         </div>
 
       </div>
