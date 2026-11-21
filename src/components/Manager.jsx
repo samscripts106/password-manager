@@ -32,28 +32,28 @@ const Manager = () => {
             return;
         }
 
-        const newPassword = {
-            id: crypto.randomUUID(),
-            website: website,
-            username: username,
-            password: password
-        }
-
         if(editId === null){
-            //Adding a new password
-            setPasswords(prev => [...prev, newPassword]); //append the newPassword in the passowrds array 
-            //... spread operator copies existing elements into the new array
+            // Adding a new password
+            const newPassword = {
+                id: crypto.randomUUID(),
+                website: website,
+                username: username,
+                password: password
+            };
+
+            setPasswords(prev => [...prev, newPassword]);
         }else{
-            //Update an existing password
-            setPasswords(prev=>
+            // Update an existing password
+            setPasswords(prev =>
                 prev.map(item =>
-                    item.id === editId? { ...item, website, username, password }:item
+                    item.id === editId ? { ...item, website, username, password } : item
                 )
             );
-        } 
-        
+        }
+
         setEditId(null);
-        //Clear the input fields 
+
+        // Clear the input fields
         setWebsite("");
         setUsername("");
         setPassword("");
@@ -79,7 +79,7 @@ const Manager = () => {
         setUsername(item.username);
         setPassword(item.password);
         setEditId(id);
-    }
+    };
 
     const filteredPasswords = passwords.filter((item)=>
         item.website.toLowerCase().includes(searchTerm.toLowerCase())
@@ -113,12 +113,12 @@ const Manager = () => {
             />
 
             <section className="mt-10 mx-auto max-w-2xl">
-            <div className='flex items-center justify-between mb-4'>
+            <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4'>
                 <h2 className="text-xl font-semibold text-white mb-4">
                     Your Saved Passwords
                 </h2>
 
-                <input type="text" placeholder="Search websites..." value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} className="w-64 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white outline-none focus:border-purple-500 placeholder:text-gray-500"/>
+                <input type="text" placeholder="Search websites..." value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} className="w-full sm:w-64 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-white outline-none focus:border-purple-500 placeholder:text-gray-500"/>
             </div>
 
             <div className='flex flex-col gap-4'>
