@@ -4,7 +4,7 @@ const AuthLayout = ({ children }) => {
         <main className="min-h-screen grid md:grid-cols-2 bg-[#0B1020] text-white">
 
             {/* Left branding section */}
-            <section className="hidden md:flex flex-col justify-center px-10 lg:px-16 bg-gradient-to-br from-[#151A35] to-[#252A55]">
+            <section className="hidden md:flex flex-col justify-center px-10 lg:px-16 bg-linear-to-br from-[#151A35] to-[#252A55]">
 
                 {/* Logo and brand */}
                 <div className="flex items-center gap-4 mb-16">

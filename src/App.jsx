@@ -25,6 +25,18 @@ function App() {
     }
   }
 
+  const handleLogout = async() => {
+    try{
+      await apiRequest('/auth/logout', {
+        method: 'POST'
+      });
+
+      setUser(null);
+    } catch (error) {
+      console.error('Logout failed:', error.message);
+    }
+  };
+
   useEffect(() => { //checks the session when the app mounts 
     const checkSession = async () => {
       try {
@@ -90,7 +102,7 @@ function App() {
           <ProtectedRoute user={user} loading={loading}>
               <>
                   <Navbar />
-                  <Profile />
+                  <Profile onLogout={handleLogout} />
               </>
           </ProtectedRoute>
           }

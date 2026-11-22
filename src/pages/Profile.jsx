@@ -1,4 +1,4 @@
-const Profile = () => {
+const Profile = ({ onLogout }) => {
   return (
     <main className="min-h-screen bg-[#0B1020] px-4 py-8 sm:px-8 text-white">
       <div className="max-w-3xl mx-auto">
@@ -63,6 +63,7 @@ const Profile = () => {
           {/* Logout */}
           <div className="border-t border-white/10 mt-8 pt-6">
             <button
+              onClick={onLogout}
               className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-5 py-2.5 text-red-400 hover:bg-red-500/20 transition-colors"
             >
               <img
