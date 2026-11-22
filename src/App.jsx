@@ -102,7 +102,7 @@ function App() {
           <ProtectedRoute user={user} loading={loading}>
               <>
                   <Navbar />
-                  <Profile onLogout={handleLogout} />
+                  <Profile user={user} onLogout={handleLogout} />
               </>
           </ProtectedRoute>
           }

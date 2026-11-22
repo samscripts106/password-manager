@@ -1,4 +1,4 @@
-const Profile = ({ onLogout }) => {
+const Profile = ({ user,onLogout }) => {
   return (
     <main className="min-h-screen bg-[#0B1020] px-4 py-8 sm:px-8 text-white">
       <div className="max-w-3xl mx-auto">
@@ -39,7 +39,7 @@ const Profile = ({ onLogout }) => {
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">
                 Email Address
               </p>
-              <p className="text-gray-200">Not connected yet</p>
+              <p className="text-gray-200">{user?.email}</p>
             </div>
 
             {/* Account creation date */}
@@ -47,7 +47,16 @@ const Profile = ({ onLogout }) => {
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">
                 Account Created
               </p>
-              <p className="text-gray-200">Not available yet</p>
+              <p className="text-gray-200">{new Date(user.createdAt).toLocaleString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+                timeZone: 'Asia/Kolkata'
+                })}
+              </p>
             </div>
 
             {/* Account ID */}
@@ -55,7 +64,7 @@ const Profile = ({ onLogout }) => {
               <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">
                 Account ID
               </p>
-              <p className="text-gray-200">Not available yet</p>
+              <p className="text-gray-200">{user?._id}</p>
             </div>
 
           </div>
