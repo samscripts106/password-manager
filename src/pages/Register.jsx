@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import AuthLayout from '../components/AuthLayout';
+import apiRequest from '../api'
+import { useNavigate } from 'react-router-dom'
+
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -9,7 +12,9 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setError(''); //clears any previous errors
@@ -29,7 +34,17 @@ const Register = () => {
             return;
         }
 
-        console.log('Registration form submitted!');
+        try{
+            const data = await apiRequest('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify({email, password})
+            })
+
+            console.log('Registration successful:', data)
+            navigate('/login')
+        } catch(error) {
+            setError(error.message)
+        }
     };
 
     const getPasswordStrength = (password) => {
