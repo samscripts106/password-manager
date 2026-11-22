@@ -20,7 +20,7 @@ app.get('/', (req, res) => { // defines a route that responds to GET reqs
     res.send('PassVault backend is running!');
 });
 
-app.post('/api/test', (req, res) => { // registers an endpoint that accepts POST req
+app.get('/api/test', (req, res) => { // registers an endpoint that accepts POST req
     console.log(req.body);
 
     res.json({
