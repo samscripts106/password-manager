@@ -11,6 +11,7 @@ import Profile from './pages/Profile'
 import { useEffect, useState } from 'react'
 import apiRequest from './api'
 import ProtectedRoute from './components/ProtectedRoute'
+import GuestRoute from './components/GuestRoute'
 
 function App() {
   const [user, setUser] = useState(null) // user stores the currently authenticated user's info
@@ -59,15 +60,7 @@ function App() {
       <Routes>
 
         {/* Default route */}
-        <Route path="/" element={
-          <ProtectedRoute user={user} loading={loading}>
-              <>
-                  <Navbar />
-                  <Manager />
-              </>
-          </ProtectedRoute>
-        } 
-        />
+        <Route path="/" element={<Navigate to="/vault" replace />} />
 
         {/* Main application */}
         <Route
@@ -109,9 +102,30 @@ function App() {
         />
 
         {/* Authentication pages */}
-        <Route path="/login" element={<Login onLogin={updateUser}/> } />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route
+          path="/login"
+          element={
+            <GuestRoute user={user} loading={loading}>
+              <Login onLogin={updateUser} />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <GuestRoute user={user} loading={loading}>
+              <Register />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <GuestRoute user={user} loading={loading}>
+              <ForgotPassword />
+            </GuestRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )
