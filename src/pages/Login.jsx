@@ -1,6 +1,8 @@
-
 import { useState } from 'react';
 import AuthLayout from '../components/AuthLayout';
+
+import { useNavigate } from 'react-router-dom';
+import apiRequest from '../api';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -8,7 +10,9 @@ const Login = () => {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         setError('');
@@ -18,7 +22,17 @@ const Login = () => {
             return;
         }
 
-        console.log('Login form submitted!');
+        try{
+            const data = await apiRequest('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email, password })
+            });
+
+            console.log('Login successful:', data);
+            navigate('/vault');
+        } catch (error) {
+            setError(error.message);
+        }
     };
 
     return (
