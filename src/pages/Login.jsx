@@ -4,7 +4,7 @@ import AuthLayout from '../components/AuthLayout';
 import { useNavigate } from 'react-router-dom';
 import apiRequest from '../api';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -29,6 +29,9 @@ const Login = () => {
             });
 
             console.log('Login successful:', data);
+
+            await onLogin();
+
             navigate('/vault');
         } catch (error) {
             setError(error.message);

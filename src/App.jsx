@@ -8,49 +8,78 @@ import ForgotPassword from './pages/ForgotPassword'
 import Settings from './pages/Settings'
 import Profile from './pages/Profile'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import apiRequest from './api'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
-  useEffect(() => {
-    const testAPI = async () => {
+  const [user, setUser] = useState(null) // user stores the currently authenticated user's info
+  const [loading, setLoading] = useState(true) // tells us whether the session is still running
+
+  const updateUser = async () => {
+    try {
+      const data = await apiRequest('/auth/me')
+      setUser(data.user)
+    } catch (error) {
+      setUser(null)
+    }
+  }
+
+  useEffect(() => { //checks the session when the app mounts 
+    const checkSession = async () => {
       try {
-        const data = await apiRequest('/test')
-        console.log('API utility:', data)
+        const data = await apiRequest('/auth/me') // asks who i s currently logged in 
+        console.log('Current user:', data)
+        setUser(data.user) // stores the returned user info
       } catch (error) {
-        console.error('API error:', error.message)
+        console.log('No active session:', error.message)
+        setUser(null)
+      } finally { // runs when the req succeeds or fails
+        setLoading(false)
       }
     }
 
-    testAPI()
+    checkSession()
   }, [])
-  
+
   return (
     <BrowserRouter>
       <Routes>
 
         {/* Default route */}
-        <Route path="/" element={<Navigate to="/vault" replace />} />
+        <Route path="/" element={
+          <ProtectedRoute user={user} loading={loading}>
+              <>
+                  <Navbar />
+                  <Manager />
+              </>
+          </ProtectedRoute>
+        } 
+        />
 
         {/* Main application */}
         <Route
           path="/vault"
           element={
-            <>
-              <Navbar />
-              <Manager />
-            </>
-          }
+          <ProtectedRoute user={user} loading={loading}>
+              <>
+                  <Navbar />
+                  <Manager />
+              </>
+          </ProtectedRoute>
+          } 
         />
 
         {/* Settings page */}
         <Route
           path="/settings"
           element={
-            <>
-              <Navbar />
-              <Settings />
-            </>
+          <ProtectedRoute user={user} loading={loading}>
+              <>
+                  <Navbar />
+                  <Settings />
+              </>
+          </ProtectedRoute>
           }
         />
 
@@ -58,15 +87,17 @@ function App() {
         <Route
           path="/profile"
           element={
-            <>
-              <Navbar />
-              <Profile />
-            </>
+          <ProtectedRoute user={user} loading={loading}>
+              <>
+                  <Navbar />
+                  <Profile />
+              </>
+          </ProtectedRoute>
           }
         />
 
         {/* Authentication pages */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login onLogin={updateUser}/> } />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
