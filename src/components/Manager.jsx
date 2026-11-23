@@ -69,11 +69,26 @@ const Manager = () => {
            }
         }else{
             // Update an existing password
-            setPasswords(prev =>
-                prev.map(item =>
-                    item.id === editId ? { ...item, website, username, password } : item
-                )
-            );
+            try{
+                await apiRequest(`/passwords/${editId}`,{
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        website,
+                        username,
+                        password
+                    })
+                });
+
+                setPasswords(prev =>
+                    prev.map(item => 
+                        item.id === editId
+                            ? {...item, website, username, password}:item
+                    )
+                );
+            } catch (error) {
+                alert(error.message);
+                return;
+            }
         }
 
         setEditId(null);
