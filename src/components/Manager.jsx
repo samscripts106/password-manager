@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import PasswordForm from './PasswordForm'
 import PasswordCard from './PasswordCard'
+import apiRequest from '../api'
 
 const Manager = () => {
     const [showPassword, setShowPassword] = useState(false)
@@ -11,20 +12,30 @@ const Manager = () => {
     const [editId, setEditId] = useState(null) //null means we are adding a new password
     const [searchTerm, setSearchTerm] = useState("");
 
-    //The function passed to useState runs only during the initial state setup, not on every render (Lazy initialisation)
-    const [passwords, setPasswords] = useState(()=>{
-        const savedPasswords = JSON.parse(localStorage.getItem("passwords")) || []; //retreives the saved array
-        return savedPasswords.map(item => ({
-            ...item,
-            id: item.id || crypto.randomUUID() //preserves an existing ID or generates one if missing
-        })); 
-    }); //saved credentials
-    
-    useEffect(()=>{
-        localStorage.setItem("passwords", JSON.stringify(passwords)); //"passwords" is a new key we're creating in LocalStrorage (Like a label on the storage box)
-        //passwords is the actual data put into the box
-    }, [passwords]);
+    const [passwords, setPasswords] = useState([]); //passwords starts empty coz we havent fetched anything yet
+    const [loading, setLoading] = useState(true); // loading tells us whether the backend req is still in progress
 
+    // useEffect runs when the Manager mounts
+    useEffect(() => {
+        const fetchPasswords = async () => {
+            try{
+                const data = await apiRequest('/passwords'); // sends a GET req to the backend
+
+                const formattedPasswords = data.passwords.map(item => ({ //data.passwords contains the returned array
+                    ...item,
+                    id: item._id // we map our mongoDB's _id to our frontend's id
+                }));
+
+                setPasswords(formattedPasswords); // updates React state triggering a re-render
+            } catch (error) {
+                console.error('Failed to fetch passwords:', error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPasswords();
+    }, [])
 
     const savePassword = () => {
         if(website.trim() === "" || username.trim() === "" || password.trim() === ""){
@@ -122,10 +133,14 @@ const Manager = () => {
             </div>
 
             <div className='flex flex-col gap-4'>
-                {filteredPasswords.length > 0 ? (
+                {loading ? (
+                    <p className="text-center text-gray-400 py-6">
+                        Loading passwords...
+                    </p>
+                ) : filteredPasswords.length > 0 ? (
                     filteredPasswords.map((item) => (
                         <PasswordCard
-                            key={item.id} //stable identity for each card
+                            key={item.id}
                             item={item}
                             id={item.id}
                             handleEdit={handleEdit}
