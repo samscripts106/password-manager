@@ -99,14 +99,22 @@ const Manager = () => {
         setPassword("");
     };
 
-    const handleDelete = (id) =>{
-        setPasswords(prev=> prev.filter(item=> item.id!==id));
+    const handleDelete = async (id) =>{
+        try {
+            await apiRequest(`/passwords/${id}`, {
+                method: 'DELETE'
+            });
 
-        if (editId === id){
-            setEditId(null);
-            setWebsite("");
-            setUsername("");
-            setPassword("");
+            setPasswords(prev => prev.filter (item => item.id != id));
+
+            if(editId === id){
+                setEditId(null);
+                setWebsite("");
+                setUsername("");
+                setPassword("");
+            }
+        } catch (error) {
+            alert(error.message);
         }
     };
 
