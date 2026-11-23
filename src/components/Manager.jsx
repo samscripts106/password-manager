@@ -37,22 +37,36 @@ const Manager = () => {
         fetchPasswords();
     }, [])
 
-    const savePassword = () => {
+    const savePassword = async () => {
         if(website.trim() === "" || username.trim() === "" || password.trim() === ""){
             alert("Please fill in all fields!");
             return;
         }
 
         if(editId === null){
-            // Adding a new password
+            // Add a new password 
+           try {
+             const data = await apiRequest('/passwords', {
+                method: 'POST',
+                body: JSON.stringify({
+                    website,
+                    username,
+                    password
+                })
+            });
+
             const newPassword = {
-                id: crypto.randomUUID(),
-                website: website,
-                username: username,
-                password: password
-            };
+                id: data.passwordId,
+                website,
+                username,
+                password
+            }
 
             setPasswords(prev => [...prev, newPassword]);
+           } catch (error) {
+            alert(error.message);
+            return;
+           }
         }else{
             // Update an existing password
             setPasswords(prev =>
