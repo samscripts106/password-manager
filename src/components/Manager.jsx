@@ -14,6 +14,9 @@ const Manager = () => {
 
     const [passwords, setPasswords] = useState([]); //passwords starts empty coz we havent fetched anything yet
     const [loading, setLoading] = useState(true); // loading tells us whether the backend req is still in progress
+    const [fetchError, setFetchError] = useState(""); 
+    const [saving, setSaving] = useState(false);
+    const [deletingId, setDeletingId] = useState(null);  
 
     // useEffect runs when the Manager mounts
     useEffect(() => {
@@ -29,6 +32,8 @@ const Manager = () => {
                 setPasswords(formattedPasswords); // updates React state triggering a re-render
             } catch (error) {
                 console.error('Failed to fetch passwords:', error.message);
+
+                setFetchError(error.message || 'Failed to load passwords. Please try again.'); 
             } finally {
                 setLoading(false);
             }
@@ -38,38 +43,37 @@ const Manager = () => {
     }, [])
 
     const savePassword = async () => {
+        if (saving) return; // prevents repeated submissions
+
         if(website.trim() === "" || username.trim() === "" || password.trim() === ""){
             alert("Please fill in all fields!");
             return;
         }
 
-        if(editId === null){
-            // Add a new password 
-           try {
-             const data = await apiRequest('/passwords', {
+        setSaving(true); // runs only after validation POST or PUT is in progress
+
+        try {
+            if(editId === null){
+                // Add a new password 
+                const data = await apiRequest('/passwords', {
                 method: 'POST',
                 body: JSON.stringify({
                     website,
                     username,
                     password
                 })
-            });
+                });
 
-            const newPassword = {
-                id: data.passwordId,
-                website,
-                username,
-                password
-            }
+                const newPassword = {
+                    id: data.passwordId,
+                    website,
+                    username,
+                    password
+                }
+                setPasswords(prev => [...prev, newPassword]);
 
-            setPasswords(prev => [...prev, newPassword]);
-           } catch (error) {
-            alert(error.message);
-            return;
-           }
-        }else{
-            // Update an existing password
-            try{
+            }else{
+                // Update an existing password
                 await apiRequest(`/passwords/${editId}`,{
                     method: 'PUT',
                     body: JSON.stringify({
@@ -81,25 +85,25 @@ const Manager = () => {
 
                 setPasswords(prev =>
                     prev.map(item => 
-                        item.id === editId
-                            ? {...item, website, username, password}:item
+                        item.id === editId ? {...item, website, username, password}:item
                     )
                 );
-            } catch (error) {
-                alert(error.message);
-                return;
             }
+            setEditId(null);
+            setWebsite("");
+            setUsername("");
+            setPassword("");
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setSaving(false); // after the password is finally saved we toggle the saving to false
         }
-
-        setEditId(null);
-
-        // Clear the input fields
-        setWebsite("");
-        setUsername("");
-        setPassword("");
     };
 
     const handleDelete = async (id) =>{
+        if(deletingId === id) return; // the delete button of that particular card gets disabled when the delete function is ongoing
+        setDeletingId(id); // update the deletingId to the id of the card we wanna delete
+
         try {
             await apiRequest(`/passwords/${id}`, {
                 method: 'DELETE'
@@ -115,6 +119,8 @@ const Manager = () => {
             }
         } catch (error) {
             alert(error.message);
+        } finally {
+            setDeletingId(null); 
         }
     };
 
@@ -158,6 +164,7 @@ const Manager = () => {
                 editId={editId}
                 savePassword={savePassword}
                 setEditId={setEditId}
+                saving={saving}
             />
 
             <section className="mt-10 mx-auto max-w-2xl">
@@ -171,10 +178,26 @@ const Manager = () => {
 
             <div className='flex flex-col gap-4'>
                 {loading ? (
-                    <p className="text-center text-gray-400 py-6">
-                        Loading passwords...
+                    //GET req in progress
+                    <p className="text-center text-gray-400 py-6"> 
+                        Loading passwords... 
                     </p>
-                ) : filteredPasswords.length > 0 ? (
+                ) : fetchError? (
+                    //GET req fails
+                    <p className='text-center text-red-400 py-6'>
+                        {fetchError}
+                    </p>
+                ) : passwords.length === 0 ? (
+                    //No saved passwords 
+                    <p className='text-center text-gray-400 py-6'>
+                        Your vault is empty. Add your first password!
+                    </p>
+                ) : filteredPasswords.length === 0 ? (
+                    //Search has no matches
+                    <p className='text-center text-gray-400 py-6'>
+                        No matching passwords found.
+                    </p>
+                ) : (
                     filteredPasswords.map((item) => (
                         <PasswordCard
                             key={item.id}
@@ -182,12 +205,9 @@ const Manager = () => {
                             id={item.id}
                             handleEdit={handleEdit}
                             handleDelete={handleDelete}
+                            deletingId={deletingId}
                         />
                     ))
-                ) : (
-                    <p className="text-center text-gray-400 py-6">
-                        No passwords found.
-                    </p>
                 )}
             </div>
         </section>

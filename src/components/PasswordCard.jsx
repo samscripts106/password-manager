@@ -4,7 +4,8 @@ const PasswordCard = ({
     item,
     id,
     handleEdit,
-    handleDelete
+    handleDelete,
+    deletingId
 }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [copiedField, setCopiedField] = useState("");
@@ -26,7 +27,13 @@ const PasswordCard = ({
             </h3>
             <div className='flex gap-3'>
                 <button onClick={()=>handleEdit(id)} className='text-purple-400 hover:font-bold'>Edit</button>
-                <button onClick={()=>handleDelete(id)} className='text-red-400 hover:font-bold'>Delete</button>
+                                <button
+                    onClick={() => handleDelete(id)}
+                    className='text-red-400 hover:font-bold disabled:opacity-50 disabled:cursor-not-allowed'
+                    disabled={deletingId === id}
+                >
+                    {deletingId === id ? "Deleting..." : "Delete"}
+                </button>
             </div>
         </div>
 

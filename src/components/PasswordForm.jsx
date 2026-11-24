@@ -10,7 +10,8 @@ const PasswordForm = ({
     setShowPassword,
     editId,
     savePassword,
-    setEditId
+    setEditId,
+    saving
 }) => {
   return (
     <div>
@@ -40,18 +41,21 @@ const PasswordForm = ({
                         </button>
                     </div>
 
-                    <button onClick={savePassword} className="rounded-lg bg-purple-600 px-5 py-3 font-medium text-white hover:bg-purple-500"> {editId === null ? "Save Password" : "Update Password"} </button>
+                    <button onClick={savePassword} disabled={saving} className="rounded-lg bg-purple-600 px-5 py-3 font-medium text-white hover:bg-purple-500 disabled:opacity-50 disabled:cursor-not-allowed">
+                        {saving? (editId===null? "Saving...": "Updating..."): (editId===null? "Save Password": "Update Password")}
+                    </button>
 
                     {editId !== null && (
                         <button
                             type = "button"
+                            disabled = {saving}
                             onClick={()=>{
                                 setEditId(null);
                                 setWebsite("");
                                 setUsername("");
                                 setPassword("");
                             }}
-                            className='rounded-lg border border-white/20 px-5 py-3 text-gray-300 hover:bg-white/10'
+                            className='rounded-lg border border-white/20 px-5 py-3 text-gray-300 hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed'
                         >
                             Cancel
                         </button>
