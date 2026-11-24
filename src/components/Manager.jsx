@@ -16,7 +16,11 @@ const Manager = () => {
     const [loading, setLoading] = useState(true); // loading tells us whether the backend req is still in progress
     const [fetchError, setFetchError] = useState(""); 
     const [saving, setSaving] = useState(false);
-    const [deletingId, setDeletingId] = useState(null);  
+    const [deletingId, setDeletingId] = useState(null); 
+    const [feedback, setFeedback] = useState({
+        message: "", // text to display
+        type: "" //to distinguish success from error and style the msg accordingly
+    });
 
     // useEffect runs when the Manager mounts
     useEffect(() => {
@@ -42,11 +46,26 @@ const Manager = () => {
         fetchPasswords();
     }, [])
 
+    useEffect(() => {
+        if (!feedback.message) return;
+
+        const timer = setTimeout(() => {
+            setFeedback({ message: "", type: "" });
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, [feedback]);
+
     const savePassword = async () => {
+        setFeedback({message: "", type: ""});
+        
         if (saving) return; // prevents repeated submissions
 
         if(website.trim() === "" || username.trim() === "" || password.trim() === ""){
-            alert("Please fill in all fields!");
+            setFeedback({
+                message: "Please fill in all fields!",
+                type: "error"
+            });
             return;
         }
 
@@ -89,12 +108,21 @@ const Manager = () => {
                     )
                 );
             }
+
+            setFeedback({
+                message: editId===null? "Password saved successfully!" : "Password updated successfully!",
+                type: "success"
+            });
+
             setEditId(null);
             setWebsite("");
             setUsername("");
             setPassword("");
         } catch (error) {
-            alert(error.message);
+            setFeedback({
+                message: error.message,
+                type: "error"
+            });
         } finally {
             setSaving(false); // after the password is finally saved we toggle the saving to false
         }
@@ -102,6 +130,7 @@ const Manager = () => {
 
     const handleDelete = async (id) =>{
         if(deletingId === id) return; // the delete button of that particular card gets disabled when the delete function is ongoing
+        setFeedback({message: "", type: ""});
         setDeletingId(id); // update the deletingId to the id of the card we wanna delete
 
         try {
@@ -109,7 +138,12 @@ const Manager = () => {
                 method: 'DELETE'
             });
 
-            setPasswords(prev => prev.filter (item => item.id != id));
+            setPasswords(prev => prev.filter (item => item.id !== id));
+
+            setFeedback({
+                message: "Password deleted successfully!",
+                type: "success"
+            });
 
             if(editId === id){
                 setEditId(null);
@@ -118,7 +152,10 @@ const Manager = () => {
                 setPassword("");
             }
         } catch (error) {
-            alert(error.message);
+            setFeedback({
+                message: error.message,
+                type: "error"
+            });
         } finally {
             setDeletingId(null); 
         }
@@ -166,6 +203,20 @@ const Manager = () => {
                 setEditId={setEditId}
                 saving={saving}
             />
+
+            {/* feedback message display */}
+            {feedback.message && (
+                <div
+                    role="status"
+                    className={`mx-auto mt-4 max-w-2xl rounded-lg border px-4 py-3 text-sm ${
+                        feedback.type === "success"
+                            ? "border-green-500/30 bg-green-500/10 text-green-400"
+                            : "border-red-500/30 bg-red-500/10 text-red-400"
+                    }`}
+                >
+                    {feedback.message}
+                </div>
+            )}
 
             <section className="mt-10 mx-auto max-w-2xl">
             <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4'>
